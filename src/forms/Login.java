@@ -3,6 +3,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package forms;
+import com.formdev.flatlaf.FlatDarkLaf;
+
 
 /**
  *
@@ -16,7 +18,19 @@ public class Login extends javax.swing.JFrame {
      * Creates new form Login
      */
     public Login() {
+        getContentPane().setBackground(new java.awt.Color(23,27,42));
+        //this.jButton1.setBackground(new java.awt.Color(230,244,255));
+        
+        iniciar();
         initComponents();
+    }
+    
+    public void iniciar(){
+         try {
+            FlatDarkLaf.setup();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -28,17 +42,31 @@ public class Login extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jButton1 = new javax.swing.JButton();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jButton1.setBackground(new java.awt.Color(230, 244, 255));
+        jButton1.setFont(new java.awt.Font("Gill Sans Ultra Bold Condensed", 2, 12)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(90, 24, 154));
+        jButton1.setText("Hola Mundo");
+        jButton1.setBorderPainted(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(149, 149, 149)
+                .addComponent(jButton1)
+                .addContainerGap(157, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(184, Short.MAX_VALUE)
+                .addComponent(jButton1)
+                .addGap(90, 90, 90))
         );
 
         pack();
@@ -70,5 +98,6 @@ public class Login extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
     // End of variables declaration//GEN-END:variables
 }
