@@ -1,21 +1,20 @@
 package module_3.Class;
 
 public class Empresa {
-    private String name, idCorrelative, type, socialReason, nrc, nit, giro;
+    private String name, socialReason, nrc, nit, giro;
+    private int idCorrelative;
 
     public Empresa() {
     }
     public Empresa(
             String name,
-            String idCorrelative,
-            String type,
+            int idCorrelative,
             String socialReason,
             String nrc,
             String nit,
             String giro){
         this.name=name;
         this.idCorrelative=idCorrelative;
-        this.type=type;
         this.socialReason=socialReason;
         this.nrc=nrc;
         this.nit=nit;
@@ -30,21 +29,14 @@ public class Empresa {
         this.name = name;
     }
 
-    public String getIdCorrelative() {
+    public int getIdCorrelative() {
         return idCorrelative;
     }
 
-    public void setIdCorrelative(String idCorrelative) {
+    public void setIdCorrelative(int idCorrelative) {
         this.idCorrelative = idCorrelative;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
 
     public String getSocialReason() {
         return socialReason;
