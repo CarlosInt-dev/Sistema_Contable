@@ -1,10 +1,14 @@
 package forms;
 
 import com.formdev.flatlaf.FlatDarkLaf;
+
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.ImageIcon;
 import javax.swing.table.DefaultTableModel;
 import module_3.Class.Conection;
 import module_3.Class.DetalleOrdenCompra;
@@ -29,6 +33,7 @@ public class FrmOrdenCompra extends javax.swing.JFrame {
         initComponents();
         initLogica();
         aplicarEstilos();
+        
     }
 
     private void initLogica() {
@@ -206,21 +211,25 @@ public class FrmOrdenCompra extends javax.swing.JFrame {
     private void aplicarEstilos() {
 
         // ── Fuente general ──────────────────────────────
-        java.awt.Font fuenteNormal = new java.awt.Font("Segoe UI", java.awt.Font.PLAIN, 13);
-        java.awt.Font fuenteBold = new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 13);
+        java.awt.Font fuenteNormal = new java.awt.Font("Impact", java.awt.Font.ITALIC, 10);
+        java.awt.Font fuenteNormalHover = new java.awt.Font("Impact", java.awt.Font.ITALIC, 14);
+        java.awt.Font fuenteBold = new java.awt.Font("Impact", java.awt.Font.ITALIC, 10);
+        java.awt.Font fuenteBoldHover = new java.awt.Font("Impact", java.awt.Font.ITALIC, 14);
         java.awt.Font fuenteTitulo = new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 15);
 
         // ── Colores ─────────────────────────────────────
-        java.awt.Color colorAcento = new java.awt.Color(0, 122, 255);   // azul Mac
-        java.awt.Color colorFondoCard = new java.awt.Color(44, 44, 46);    // gris oscuro
-        java.awt.Color colorTexto = new java.awt.Color(235, 235, 245); // blanco suave
-        java.awt.Color colorExito = new java.awt.Color(48, 209, 88);   // verde
-        java.awt.Color colorPeligro = new java.awt.Color(255, 69, 58);   // rojo
+        java.awt.Color colorAcento = new java.awt.Color(3, 52, 110);   // azul Mac
+        java.awt.Color colorFondoCard = new java.awt.Color(34, 40, 49);    // storm carbon
+        java.awt.Color colorTexto = new java.awt.Color(194, 179, 158); // dune stone
+        java.awt.Color colorExito = new java.awt.Color(68, 161, 148);   // verde
+        java.awt.Color colorPeligro = new java.awt.Color(237, 53, 0);   // rojo
 
         // ── Tamaño del formulario ───────────────────────
         this.setSize(670, 640);
         this.setLocationRelativeTo(null); // centrar en pantalla
         this.setTitle("📦 Gestión de Órdenes de Compra");
+        // ── Content Pane ─────────────────────────────
+        getContentPane().setBackground(colorFondoCard);
 
         // ── Campos de texto ─────────────────────────────
         java.awt.Component[] campos = {
@@ -229,11 +238,14 @@ public class FrmOrdenCompra extends javax.swing.JFrame {
         for (java.awt.Component c : campos) {
             c.setFont(fuenteNormal);
             c.setPreferredSize(new java.awt.Dimension(c.getPreferredSize().width, 32));
+            c.setForeground(colorTexto);
         }
 
         // N° Orden en bold (es solo lectura)
         txtNumeroOrden.setFont(fuenteBold);
+        txtNumeroOrden.setForeground(colorTexto);
         txtTotal.setFont(fuenteBold);
+        txtTotal.setForeground(colorTexto);
 
         // ── ComboBoxes ──────────────────────────────────
         cmbProveedor.setFont(fuenteNormal);
@@ -242,13 +254,14 @@ public class FrmOrdenCompra extends javax.swing.JFrame {
 
         // ── Botones ─────────────────────────────────────
         // Botón Agregar
+
         btnAgregarDetalle.setFont(fuenteBold);
         btnAgregarDetalle.setBackground(colorAcento);
         btnAgregarDetalle.setForeground(colorTexto);
         btnAgregarDetalle.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnAgregarDetalle.setBorderPainted(false);
         btnAgregarDetalle.setFocusPainted(false);
-        btnAgregarDetalle.setText("＋  Agregar");
+        btnAgregarDetalle.setText("Agregar");
 
         // Botón Guardar
         btnGuardar.setFont(fuenteBold);
@@ -257,7 +270,7 @@ public class FrmOrdenCompra extends javax.swing.JFrame {
         btnGuardar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnGuardar.setBorderPainted(false);
         btnGuardar.setFocusPainted(false);
-        btnGuardar.setText("💾  Guardar");
+        btnGuardar.setText(" Guardar");
 
         // Botón Nuevo
         btnNuevo.setFont(fuenteBold);
@@ -266,16 +279,18 @@ public class FrmOrdenCompra extends javax.swing.JFrame {
         btnNuevo.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnNuevo.setBorderPainted(false);
         btnNuevo.setFocusPainted(false);
-        btnNuevo.setText("🆕  Nueva");
+        btnNuevo.setText("Nueva");
 
         // Botón Eliminar
+         ImageIcon imgDelete = new ImageIcon("src/images/eliminar.png");
         btnEliminar.setFont(fuenteBold);
         btnEliminar.setBackground(colorPeligro);
-        btnEliminar.setForeground(java.awt.Color.WHITE);
+        btnEliminar.setForeground(new java.awt.Color(255, 234, 216));
         btnEliminar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnEliminar.setBorderPainted(false);
         btnEliminar.setFocusPainted(false);
-        btnEliminar.setText("🗑  Eliminar");
+        btnEliminar.setText("Eliminar");
+        
 
         // ── Tablas ──────────────────────────────────────
         // Tabla detalle
@@ -287,7 +302,7 @@ public class FrmOrdenCompra extends javax.swing.JFrame {
         tblDetalle.getTableHeader().setBackground(colorFondoCard);
         tblDetalle.getTableHeader().setForeground(colorTexto);
         tblDetalle.setSelectionBackground(colorAcento);
-        tblDetalle.setSelectionForeground(java.awt.Color.WHITE);
+        tblDetalle.setSelectionForeground(new java.awt.Color(226, 226, 182));
 
         // Tabla órdenes
         tblOrdenes.setFont(fuenteNormal);
@@ -298,7 +313,7 @@ public class FrmOrdenCompra extends javax.swing.JFrame {
         tblOrdenes.getTableHeader().setBackground(colorFondoCard);
         tblOrdenes.getTableHeader().setForeground(colorTexto);
         tblOrdenes.setSelectionBackground(colorAcento);
-        tblOrdenes.setSelectionForeground(java.awt.Color.WHITE);
+        tblOrdenes.setSelectionForeground( new java.awt.Color(244, 240, 228) );
 
         // ── Labels ──────────────────────────────────────
         // Recorremos todos los labels del formulario
@@ -318,14 +333,66 @@ public class FrmOrdenCompra extends javax.swing.JFrame {
         // Forzar color de texto en todos los labels
         for (java.awt.Component comp : getContentPane().getComponents()) {
             if (comp instanceof javax.swing.JLabel) {
-                ((javax.swing.JLabel) comp).setForeground(java.awt.Color.WHITE);
+                ((javax.swing.JLabel) comp).setForeground(colorTexto);
                 comp.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 13));
             }
             if (comp instanceof java.awt.Container) {
                 for (java.awt.Component inner : ((java.awt.Container) comp).getComponents()) {
                     if (inner instanceof javax.swing.JLabel) {
-                        ((javax.swing.JLabel) inner).setForeground(java.awt.Color.WHITE);
+                        ((javax.swing.JLabel) inner).setForeground(colorTexto);
                         inner.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 13));
+                    }
+                }
+            }
+        }
+        //Animación para cambiar tamaño de botones
+        for (java.awt.Component comparation : getContentPane().getComponents()) {
+            int anchoOriginalBtnAgregar = comparation.getWidth(),
+                    altoOriginalBtnAgregar= comparation.getHeight();
+            if (comparation instanceof javax.swing.JButton) {
+                comparation.addMouseListener(new MouseAdapter() {
+
+                    @Override
+                    public void mouseEntered(MouseEvent e) {
+                        // Aumentar tamaño
+                        comparation.setSize(anchoOriginalBtnAgregar + 25, altoOriginalBtnAgregar + 10);
+                        comparation.setFont(fuenteBoldHover);
+                    }
+
+                    @Override
+                    public void mouseExited(MouseEvent e) {
+
+                        // Regresar tamaño original
+                        comparation.setSize(anchoOriginalBtnAgregar, altoOriginalBtnAgregar);
+                        comparation.setFont(fuenteBold);
+                    }
+                });
+            }
+            // Si hay paneles anidados
+            if (comparation instanceof java.awt.Container) {
+                for (java.awt.Component inner : ((java.awt.Container) comparation).getComponents()) {
+                    int anchoOriginalInner = inner.getWidth(),
+                            altoOriginalInner= inner.getHeight();
+                    if (inner instanceof javax.swing.JButton) {
+                        inner.addMouseListener(new MouseAdapter() {
+
+
+
+                            @Override
+                            public void mouseEntered(MouseEvent e) {
+                                // Aumentar tamaño
+                                inner.setSize(anchoOriginalInner + 40, altoOriginalInner + 15);
+                                inner.setFont(fuenteBoldHover);
+                            }
+
+                            @Override
+                            public void mouseExited(MouseEvent e) {
+
+                                // Regresar tamaño original
+                                inner.setSize(anchoOriginalInner, altoOriginalInner);
+                                inner.setFont(fuenteBold);
+                            }
+                        });
                     }
                 }
             }
