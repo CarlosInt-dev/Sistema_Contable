@@ -33,7 +33,7 @@ public class FrmOrdenCompra extends javax.swing.JFrame {
         initComponents();
         initLogica();
         aplicarEstilos();
-        
+
     }
 
     private void initLogica() {
@@ -253,6 +253,14 @@ public class FrmOrdenCompra extends javax.swing.JFrame {
         cmbEstado.setFont(fuenteNormal);
 
         // ── Botones ─────────────────────────────────────
+        //Boton Reporte
+        btnReporte.setBackground(new java.awt.Color(88, 86, 214)); // morado
+        btnReporte.setForeground(java.awt.Color.WHITE);
+        btnReporte.setBorderPainted(false);
+        btnReporte.setFocusPainted(false);
+        btnReporte.setFont(fuenteBold);
+        btnReporte.setText("📄  Reporte");
+        btnReporte.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         // Botón Agregar
 
         btnAgregarDetalle.setFont(fuenteBold);
@@ -282,7 +290,7 @@ public class FrmOrdenCompra extends javax.swing.JFrame {
         btnNuevo.setText("Nueva");
 
         // Botón Eliminar
-         ImageIcon imgDelete = new ImageIcon("src/images/eliminar.png");
+        ImageIcon imgDelete = new ImageIcon("src/images/eliminar.png");
         btnEliminar.setFont(fuenteBold);
         btnEliminar.setBackground(colorPeligro);
         btnEliminar.setForeground(new java.awt.Color(255, 234, 216));
@@ -290,7 +298,6 @@ public class FrmOrdenCompra extends javax.swing.JFrame {
         btnEliminar.setBorderPainted(false);
         btnEliminar.setFocusPainted(false);
         btnEliminar.setText("Eliminar");
-        
 
         // ── Tablas ──────────────────────────────────────
         // Tabla detalle
@@ -313,7 +320,7 @@ public class FrmOrdenCompra extends javax.swing.JFrame {
         tblOrdenes.getTableHeader().setBackground(colorFondoCard);
         tblOrdenes.getTableHeader().setForeground(colorTexto);
         tblOrdenes.setSelectionBackground(colorAcento);
-        tblOrdenes.setSelectionForeground( new java.awt.Color(244, 240, 228) );
+        tblOrdenes.setSelectionForeground(new java.awt.Color(244, 240, 228));
 
         // ── Labels ──────────────────────────────────────
         // Recorremos todos los labels del formulario
@@ -348,7 +355,7 @@ public class FrmOrdenCompra extends javax.swing.JFrame {
         //Animación para cambiar tamaño de botones
         for (java.awt.Component comparation : getContentPane().getComponents()) {
             int anchoOriginalBtnAgregar = comparation.getWidth(),
-                    altoOriginalBtnAgregar= comparation.getHeight();
+                    altoOriginalBtnAgregar = comparation.getHeight();
             if (comparation instanceof javax.swing.JButton) {
                 comparation.addMouseListener(new MouseAdapter() {
 
@@ -372,11 +379,9 @@ public class FrmOrdenCompra extends javax.swing.JFrame {
             if (comparation instanceof java.awt.Container) {
                 for (java.awt.Component inner : ((java.awt.Container) comparation).getComponents()) {
                     int anchoOriginalInner = inner.getWidth(),
-                            altoOriginalInner= inner.getHeight();
+                            altoOriginalInner = inner.getHeight();
                     if (inner instanceof javax.swing.JButton) {
                         inner.addMouseListener(new MouseAdapter() {
-
-
 
                             @Override
                             public void mouseEntered(MouseEvent e) {
@@ -488,6 +493,105 @@ public class FrmOrdenCompra extends javax.swing.JFrame {
         cmbEstado.setSelectedIndex(0);
     }
 
+    private void generarReporteTxt() {
+        // Verificar que haya una orden seleccionada
+        int fila = tblOrdenes.getSelectedRow();
+        if (fila < 0) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                    "Seleccione una orden de la tabla para generar el reporte.",
+                    "Sin selección", javax.swing.JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // Obtener datos de la cabecera desde la tabla
+        int idOrden = (int) modeloOrdenes.getValueAt(fila, 0);
+        String numOrden = (String) modeloOrdenes.getValueAt(fila, 1);
+        String proveedor = modeloOrdenes.getValueAt(fila, 2).toString();
+        String fecha = modeloOrdenes.getValueAt(fila, 3).toString();
+        String estado = (String) modeloOrdenes.getValueAt(fila, 4);
+        String total = modeloOrdenes.getValueAt(fila, 5).toString();
+
+        // Obtener detalles desde BD
+        java.util.List<module_3.Class.DetalleOrdenCompra> detalles = dao.listarDetalles(idOrden);
+
+        // Construir el contenido del TXT
+        StringBuilder sb = new StringBuilder();
+        String linea = "═══════════════════════════════════════════════════════════\n";
+        String lineaFina = "───────────────────────────────────────────────────────────\n";
+
+        sb.append(linea);
+        sb.append("          ORDEN DE COMPRA\n");
+        sb.append("          SISTEMA CONTABLE - MÓDULO DE INVENTARIOS\n");
+        sb.append(linea);
+        sb.append(String.format("  N° Orden   : %s%n", numOrden));
+        sb.append(String.format("  Fecha      : %s%n", fecha));
+        sb.append(String.format("  Proveedor  : %s%n", proveedor));
+        sb.append(String.format("  Estado     : %s%n", estado));
+        sb.append(lineaFina);
+        sb.append("  DETALLE DE PRODUCTOS\n");
+        sb.append(lineaFina);
+        sb.append(String.format("  %-25s %8s %12s %10s %12s%n",
+                "Producto", "Cantidad", "Precio Unit.", "Descuento", "Subtotal"));
+        sb.append(lineaFina);
+
+        if (detalles.isEmpty()) {
+            sb.append("  (Sin productos registrados)\n");
+        } else {
+            for (module_3.Class.DetalleOrdenCompra d : detalles) {
+                sb.append(String.format("  %-25s %8s %12s %10s %12s%n",
+                        truncar(d.getNombreProducto(), 25),
+                        d.getCantidad().toPlainString(),
+                        d.getPrecioUnitario().toPlainString(),
+                        d.getDescuento().toPlainString(),
+                        d.getSubtotal().toPlainString()
+                ));
+            }
+        }
+
+        sb.append(lineaFina);
+        sb.append(String.format("  %-57s %12s%n", "TOTAL:", total));
+        sb.append(linea);
+        sb.append(String.format("  Generado el: %s%n",
+                new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new java.util.Date())));
+        sb.append(linea);
+
+        // Abrir diálogo para elegir dónde guardar
+        javax.swing.JFileChooser chooser = new javax.swing.JFileChooser();
+        chooser.setDialogTitle("Guardar reporte de orden");
+        chooser.setSelectedFile(new java.io.File("Reporte_" + numOrden + ".txt"));
+        chooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Archivo de texto (*.txt)", "txt"));
+
+        int resultado = chooser.showSaveDialog(this);
+        if (resultado == javax.swing.JFileChooser.APPROVE_OPTION) {
+            java.io.File archivo = chooser.getSelectedFile();
+            // Asegurar extensión .txt
+            if (!archivo.getName().toLowerCase().endsWith(".txt")) {
+                archivo = new java.io.File(archivo.getAbsolutePath() + ".txt");
+            }
+            try (java.io.PrintWriter pw = new java.io.PrintWriter(
+                    new java.io.OutputStreamWriter(
+                            new java.io.FileOutputStream(archivo), "UTF-8"))) {
+                pw.print(sb.toString());
+                javax.swing.JOptionPane.showMessageDialog(this,
+                        "✅ Reporte guardado en:\n" + archivo.getAbsolutePath(),
+                        "Reporte generado", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+            } catch (java.io.IOException e) {
+                javax.swing.JOptionPane.showMessageDialog(this,
+                        "❌ Error al guardar el archivo:\n" + e.getMessage(),
+                        "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+                e.printStackTrace();
+            }
+        }
+    }
+
+    // Auxiliar: trunca texto largo para que no rompa el formato de columnas
+    private String truncar(String texto, int max) {
+        if (texto == null) {
+            return "";
+        }
+        return texto.length() > max ? texto.substring(0, max - 1) + "…" : texto;
+    }
+
     private void limpiarCamposDetalle() {
         txtCantidad.setText("");
         txtPrecioUnit.setText("");
@@ -529,6 +633,7 @@ public class FrmOrdenCompra extends javax.swing.JFrame {
         btnEliminar = new javax.swing.JButton();
         scrlOrden = new javax.swing.JScrollPane();
         tblOrdenes = new javax.swing.JTable();
+        btnReporte = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -614,6 +719,13 @@ public class FrmOrdenCompra extends javax.swing.JFrame {
         ));
         scrlOrden.setViewportView(tblOrdenes);
 
+        btnReporte.setText("Reporte");
+        btnReporte.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReporteActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -679,11 +791,13 @@ public class FrmOrdenCompra extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(btnNuevo)
                         .addGap(18, 18, 18)
-                        .addComponent(btnEliminar))
+                        .addComponent(btnEliminar)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnReporte))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(scrlOrden)))
-                .addContainerGap(17, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -728,7 +842,8 @@ public class FrmOrdenCompra extends javax.swing.JFrame {
                         .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(btnGuardar)
                         .addComponent(btnNuevo)
-                        .addComponent(btnEliminar)))
+                        .addComponent(btnEliminar)
+                        .addComponent(btnReporte)))
                 .addGap(18, 18, 18)
                 .addComponent(scrlOrden, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -752,6 +867,10 @@ public class FrmOrdenCompra extends javax.swing.JFrame {
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         eliminarOrden();
     }//GEN-LAST:event_btnEliminarActionPerformed
+
+    private void btnReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReporteActionPerformed
+        generarReporteTxt();
+    }//GEN-LAST:event_btnReporteActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -780,6 +899,7 @@ public class FrmOrdenCompra extends javax.swing.JFrame {
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnGuardar;
     private javax.swing.JButton btnNuevo;
+    private javax.swing.JButton btnReporte;
     private javax.swing.JComboBox<String> cmbEstado;
     private javax.swing.JComboBox<String> cmbProducto;
     private javax.swing.JComboBox<String> cmbProveedor;
