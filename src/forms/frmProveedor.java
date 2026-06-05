@@ -192,26 +192,67 @@ public class frmProveedor extends javax.swing.JFrame {
         txtTelefono.setText("");
         txtCorreo.setText("");
         txtDireccion.setText("");
-        chkActivo.setSelected(true);
+        chkActivo.setSelected(true);   // ← siempre inicia como Activo
         tblProveedores.clearSelection();
         txtNombre.requestFocus();
     }
 
     private void guardar() {
+        // Validar todos los campos obligatorios
         if (txtNombre.getText().trim().isEmpty()) {
-            JOptionPane.showMessageDialog(this,
-                    "El nombre del proveedor es obligatorio.",
-                    "Validación", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "El nombre es obligatorio.", "Validación", JOptionPane.WARNING_MESSAGE);
             txtNombre.requestFocus();
+            return;
+        }
+
+        String nit = txtNit.getText().trim();
+        if (nit.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "El NIT es obligatorio.", "Validación", JOptionPane.WARNING_MESSAGE);
+            txtNit.requestFocus();
+            return;
+        }
+        if (!nit.matches("\\d{4}-\\d{6}-\\d{3}-\\d")) {
+            JOptionPane.showMessageDialog(this, "El NIT debe tener el formato: 0000-000000-000-0", "Validación", JOptionPane.WARNING_MESSAGE);
+            txtNit.requestFocus();
+            return;
+        }
+
+        String telefono = txtTelefono.getText().trim();
+        if (telefono.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "El teléfono es obligatorio.", "Validación", JOptionPane.WARNING_MESSAGE);
+            txtTelefono.requestFocus();
+            return;
+        }
+        if (!telefono.matches("\\d{4}-\\d{4}")) {
+            JOptionPane.showMessageDialog(this, "El teléfono debe tener el formato: 0000-0000", "Validación", JOptionPane.WARNING_MESSAGE);
+            txtTelefono.requestFocus();
+            return;
+        }
+
+        String correo = txtCorreo.getText().trim();
+        if (correo.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "El correo es obligatorio.", "Validación", JOptionPane.WARNING_MESSAGE);
+            txtCorreo.requestFocus();
+            return;
+        }
+        if (!correo.matches("^[^@]+@[^@]+\\.[^@]+$")) {
+            JOptionPane.showMessageDialog(this, "El correo debe tener el formato: ejemplo@dominio.com", "Validación", JOptionPane.WARNING_MESSAGE);
+            txtCorreo.requestFocus();
+            return;
+        }
+
+        if (txtDireccion.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "La dirección es obligatoria.", "Validación", JOptionPane.WARNING_MESSAGE);
+            txtDireccion.requestFocus();
             return;
         }
 
         Proveedor p = new Proveedor();
         p.setIdEmpresa(idEmpresa);
         p.setNombre(txtNombre.getText().trim());
-        p.setNit(txtNit.getText().trim());
-        p.setTelefono(txtTelefono.getText().trim());
-        p.setCorreo(txtCorreo.getText().trim());
+        p.setNit(nit);
+        p.setTelefono(telefono);
+        p.setCorreo(correo);
         p.setDireccion(txtDireccion.getText().trim());
         p.setActivo(chkActivo.isSelected());
 
@@ -300,7 +341,7 @@ public class frmProveedor extends javax.swing.JFrame {
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         lblDatosDelProveedor.setText("Datos Del proveedor");
-        getContentPane().add(lblDatosDelProveedor, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 10, 120, -1));
+        getContentPane().add(lblDatosDelProveedor, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 10, 160, -1));
 
         lblNombre.setText("Nombre *");
         getContentPane().add(lblNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, 60, -1));
@@ -336,7 +377,7 @@ public class frmProveedor extends javax.swing.JFrame {
         getContentPane().add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 0, 10, 520));
 
         lblListaDeProveedores.setText("Lista De Proveedores");
-        getContentPane().add(lblListaDeProveedores, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 10, 120, -1));
+        getContentPane().add(lblListaDeProveedores, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 10, 200, -1));
 
         tblProveedores.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
