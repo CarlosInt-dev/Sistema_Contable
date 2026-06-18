@@ -3,7 +3,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package forms;
-
+import module_3.Class.Inventario;
+import module_3.Class.InventarioDAO;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.RowFilter;
+import javax.swing.table.TableRowSorter;
 /**
  *
  * @author canum
@@ -17,6 +22,44 @@ public class frmInventario extends javax.swing.JFrame {
      */
     public frmInventario() {
         initComponents();
+        cargarTabla();
+    }
+    
+    // Instanciamos el DAO para conectarnos a la base de datos
+    InventarioDAO invDAO = new InventarioDAO();
+    // Modelo para darle forma a tu tabla visual
+    DefaultTableModel modeloTabla = new DefaultTableModel();
+    
+    TableRowSorter<DefaultTableModel> ordenador;
+
+    private void cargarTabla() {
+        // Le ponemos los nombres a las columnas
+        modeloTabla = new DefaultTableModel();
+        modeloTabla.addColumn("ID Inventario");
+        modeloTabla.addColumn("ID Producto");
+        modeloTabla.addColumn("Cantidad Actual");
+        modeloTabla.addColumn("Costo Promedio");
+        modeloTabla.addColumn("Última Actualización");
+        
+        // Llamamos al método listar del DAO
+        List<Inventario> lista = invDAO.listar();
+        
+        // Llenamos la tabla fila por fila
+        Object[] fila = new Object[5];
+        for (int i = 0; i < lista.size(); i++) {
+            fila[0] = lista.get(i).getId_inventario();
+            fila[1] = lista.get(i).getId_producto();
+            fila[2] = lista.get(i).getCantidad_actual();
+            fila[3] = lista.get(i).getCosto_promedio();
+            fila[4] = lista.get(i).getFecha_actualizacion();
+            modeloTabla.addRow(fila);
+        }
+        
+        // Le pasamos los datos a tu tabla visual
+        tblInventario.setModel(modeloTabla);
+        // Creamos el ordenador y lo asignamos a la tabla
+        ordenador = new TableRowSorter<>(modeloTabla);
+        tblInventario.setRowSorter(ordenador);
     }
 
     /**
@@ -28,21 +71,208 @@ public class frmInventario extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel1 = new javax.swing.JLabel();
+        txtBuscar = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblInventario = new javax.swing.JTable();
+        jLabel2 = new javax.swing.JLabel();
+        txtCantidad = new javax.swing.JTextField();
+        btnEntrada = new javax.swing.JButton();
+        btnSalida = new javax.swing.JButton();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jLabel1.setText("Buscar Producto:");
+
+        txtBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtBuscarKeyReleased(evt);
+            }
+        });
+
+        tblInventario.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(tblInventario);
+
+        jLabel2.setText("Cantidad a Mover:");
+
+        btnEntrada.setText("+ Entrada");
+        btnEntrada.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEntradaActionPerformed(evt);
+            }
+        });
+
+        btnSalida.setText("- Salida");
+        btnSalida.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalidaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(67, 67, 67)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 842, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addGap(41, 41, 41)
+                                .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap(90, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addGap(32, 32, 32)
+                        .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(92, 92, 92)
+                        .addComponent(btnEntrada, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnSalida, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(137, 137, 137))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(51, 51, 51)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnEntrada, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSalida, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(33, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnEntradaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntradaActionPerformed
+        // 1. Validar que el usuario haya seleccionado una fila de la tabla
+    int filaSeleccionada = tblInventario.getSelectedRow();
+    if (filaSeleccionada == -1) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Por favor, seleccione un producto de la tabla primero.");
+        return;
+    }
+
+    // 2. Validar que haya escrito una cantidad
+    if (txtCantidad.getText().trim().isEmpty()) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Por favor, ingrese una cantidad a mover.");
+        return;
+    }
+
+    try {
+        // 3. Obtener los datos de la fila seleccionada
+        int idInventario = Integer.parseInt(tblInventario.getValueAt(filaSeleccionada, 0).toString());
+        double cantidadActual = Double.parseDouble(tblInventario.getValueAt(filaSeleccionada, 2).toString());
+        double costoPromedio = Double.parseDouble(tblInventario.getValueAt(filaSeleccionada, 3).toString());
+        
+        // 4. Obtener la cantidad nueva y sumarla
+        double cantidadAMover = Double.parseDouble(txtCantidad.getText().trim());
+        if (cantidadAMover <= 0) {
+            javax.swing.JOptionPane.showMessageDialog(this, "La cantidad debe ser mayor a cero.");
+            return;
+        }
+        
+        double nuevaCantidad = cantidadActual + cantidadAMover;
+
+        // 5. Crear el objeto Inventario con los datos actualizados
+        Inventario inv = new Inventario();
+        inv.setId_inventario(idInventario);
+        inv.setCantidad_actual(nuevaCantidad);
+        inv.setCosto_promedio(costoPromedio); // Mantenemos el costo por ahora
+
+        // 6. Guardar en la base de datos usando el DAO
+        if (invDAO.actualizarStock(inv)) {
+            javax.swing.JOptionPane.showMessageDialog(this, "¡Inventario actualizado con éxito!");
+            cargarTabla(); // Volvemos a cargar la tabla para ver el cambio reflejado
+            txtCantidad.setText(""); // Limpiamos el campo de texto
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, "Hubo un error al actualizar el inventario.");
+        }
+
+    } catch (NumberFormatException e) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Por favor, ingrese un número válido en la cantidad.");
+    }
+    }//GEN-LAST:event_btnEntradaActionPerformed
+
+    private void btnSalidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalidaActionPerformed
+        // 1. Validar que el usuario haya seleccionado una fila de la tabla
+    int filaSeleccionada = tblInventario.getSelectedRow();
+    if (filaSeleccionada == -1) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Por favor, seleccione un producto de la tabla primero.");
+        return;
+    }
+
+    // 2. Validar que haya escrito una cantidad
+    if (txtCantidad.getText().trim().isEmpty()) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Por favor, ingrese una cantidad a mover.");
+        return;
+    }
+
+    try {
+        // 3. Obtener los datos de la fila seleccionada
+        int idInventario = Integer.parseInt(tblInventario.getValueAt(filaSeleccionada, 0).toString());
+        double cantidadActual = Double.parseDouble(tblInventario.getValueAt(filaSeleccionada, 2).toString());
+        double costoPromedio = Double.parseDouble(tblInventario.getValueAt(filaSeleccionada, 3).toString());
+        
+        // 4. Obtener la cantidad nueva y validar
+        double cantidadAMover = Double.parseDouble(txtCantidad.getText().trim());
+        if (cantidadAMover <= 0) {
+            javax.swing.JOptionPane.showMessageDialog(this, "La cantidad debe ser mayor a cero.");
+            return;
+        }
+        
+        // ¡Validación crucial! Evitar stock negativo
+        if (cantidadAMover > cantidadActual) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Error: No puede retirar más de la cantidad actual disponible (" + cantidadActual + ").");
+            return;
+        }
+        
+        // Restamos la cantidad
+        double nuevaCantidad = cantidadActual - cantidadAMover;
+
+        // 5. Crear el objeto Inventario con los datos actualizados
+        Inventario inv = new Inventario();
+        inv.setId_inventario(idInventario);
+        inv.setCantidad_actual(nuevaCantidad);
+        inv.setCosto_promedio(costoPromedio); 
+
+        // 6. Guardar en la base de datos usando el DAO
+        if (invDAO.actualizarStock(inv)) {
+            javax.swing.JOptionPane.showMessageDialog(this, "¡Inventario actualizado con éxito!");
+            cargarTabla(); // Volvemos a cargar la tabla para ver el cambio reflejado
+            txtCantidad.setText(""); // Limpiamos el campo de texto
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, "Hubo un error al actualizar el inventario.");
+        }
+
+    } catch (NumberFormatException e) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Por favor, ingrese un número válido en la cantidad.");
+    }
+    }//GEN-LAST:event_btnSalidaActionPerformed
+
+    private void txtBuscarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscarKeyReleased
+        ordenador.setRowFilter(RowFilter.regexFilter("(?i)" + txtBuscar.getText()));
+    }//GEN-LAST:event_txtBuscarKeyReleased
 
     /**
      * @param args the command line arguments
@@ -70,5 +300,13 @@ public class frmInventario extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnEntrada;
+    private javax.swing.JButton btnSalida;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable tblInventario;
+    private javax.swing.JTextField txtBuscar;
+    private javax.swing.JTextField txtCantidad;
     // End of variables declaration//GEN-END:variables
 }
