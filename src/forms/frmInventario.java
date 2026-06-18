@@ -81,7 +81,9 @@ public class frmInventario extends javax.swing.JFrame {
         btnSalida = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(204, 255, 255));
 
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel1.setText("Buscar Producto:");
 
         txtBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -103,8 +105,11 @@ public class frmInventario extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(tblInventario);
 
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel2.setText("Cantidad a Mover:");
 
+        btnEntrada.setBackground(new java.awt.Color(102, 255, 102));
+        btnEntrada.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnEntrada.setText("+ Entrada");
         btnEntrada.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -112,6 +117,8 @@ public class frmInventario extends javax.swing.JFrame {
             }
         });
 
+        btnSalida.setBackground(new java.awt.Color(255, 0, 0));
+        btnSalida.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnSalida.setText("- Salida");
         btnSalida.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
