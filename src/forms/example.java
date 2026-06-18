@@ -3,27 +3,20 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package forms;
-import com.formdev.flatlaf.FlatDarkLaf;
-import com.formdev.flatlaf.extras.FlatSVGIcon;
-import java.awt.Color;
-import java.awt.Image;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import javax.swing.ImageIcon;
-public class frmSignin extends javax.swing.JFrame {
-    
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(frmSignin.class.getName());
 
-    private Login padre;
-    public frmSignin(Login padre) {
+/**
+ *
+ * @author carlo
+ */
+public class example extends javax.swing.JFrame {
+    
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(example.class.getName());
+
+    /**
+     * Creates new form example
+     */
+    public example() {
         initComponents();
-        this.padre=padre;
-        addWindowListener(new java.awt.event.WindowAdapter(){
-            @Override
-            public void windowClosing(java.awt.event.WindowEvent evt) {
-                padre.setVisible(true);
-            }
-        });
     }
 
     /**
@@ -35,7 +28,7 @@ public class frmSignin extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -73,7 +66,7 @@ public class frmSignin extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        
+        java.awt.EventQueue.invokeLater(() -> new example().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

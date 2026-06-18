@@ -141,7 +141,7 @@ public class Login extends javax.swing.JFrame {
         }
     }
 
-    private void iniciar() {
+    public void iniciar() {
         try {
             FlatDarkLaf.setup();
         } catch (Exception e) {
@@ -230,6 +230,7 @@ public class Login extends javax.swing.JFrame {
 
         btnLogin.setFont(new java.awt.Font("Impact", 0, 14)); // NOI18N
         btnLogin.setText("Iniciar Sesión");
+        btnLogin.addActionListener(this::btnLoginActionPerformed);
 
         btnSignin.setFont(new java.awt.Font("Impact", 0, 14)); // NOI18N
         btnSignin.setText("Registrarse");
@@ -368,13 +369,13 @@ public class Login extends javax.swing.JFrame {
 
     private void btnViewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewActionPerformed
         if(hidePassword==true){
-            btnView.setIcon(iconViewPassword);
+            btnView.setIcon(iconHidePassword);
             pswdPassword.setEchoChar((char)0);
             hidePassword=false;
             return;
         }
         if(hidePassword==false){
-            btnView.setIcon(iconHidePassword);
+            btnView.setIcon(iconViewPassword);
             pswdPassword.setEchoChar('•');
             hidePassword=true;
             return;
@@ -389,6 +390,12 @@ public class Login extends javax.swing.JFrame {
         
         
     }//GEN-LAST:event_btnSigninActionPerformed
+
+    private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
+        frmLobby frm= new frmLobby(this);
+        frm.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_btnLoginActionPerformed
 
     /**
      * @param args the command line arguments
