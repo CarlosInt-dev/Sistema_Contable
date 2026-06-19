@@ -1,7 +1,7 @@
 package module_3.Class;
 
-
 public class Producto {
+
     private int idProducto;
     private String codigo;
     private String nombre;
@@ -47,5 +47,10 @@ public class Producto {
     public void setPrecioCompra(double precioCompra) {
         this.precioCompra = precioCompra;
     }
-    
+
+    @Override
+    public String toString() {
+        return codigo + " - " + nombre;
+    }
+
 }
