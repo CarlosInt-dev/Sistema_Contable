@@ -1,13 +1,13 @@
 package module_3.Class;
 
 public class User {
-    private String userName, idUser, password, email;
+    private String userName, idUser, password, email, name;
     private int status;
     private Role role;
     private Empresa empresa;
 
     public User() {}
-    public User(String userName, String idUser, String password, String email, int status, Role role, Empresa empresa){
+    public User(String userName, String idUser, String password, String email, String name, int status, Role role, Empresa empresa){
         this.userName=userName;
         this.idUser=idUser;
         this.password=password;
@@ -15,6 +15,7 @@ public class User {
         this.status=status;
         this.role=role;
         this.empresa=empresa;
+        this.name=name;
     }
 
     public String getUserName() {
@@ -71,5 +72,12 @@ public class User {
 
     public void setEmpresa(Empresa empresa) {
         this.empresa = empresa;
+    }
+
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
     }
 }

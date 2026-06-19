@@ -1,4 +1,5 @@
 package module_3.Class;
+import javax.swing.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +47,37 @@ public class EmpresaDAO {
         }
 
         return bussinesList;
+    }
+
+    public Empresa findEmpresa(String nit) {
+        String sql = "SELECT * FROM empresa WHERE nit = ?";
+
+        try (Connection con = Conection.conect();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, nit);
+
+            try (ResultSet rs = ps.executeQuery()) {
+
+                if (rs.next()) {
+                    Empresa empresa = new Empresa();
+
+                    empresa.setIdCorrelative(rs.getInt("id_empresa"));
+                    empresa.setName(rs.getString("nombre_comercial"));
+                    empresa.setSocialReason(rs.getString("razon_social"));
+                    empresa.setNrc(rs.getString("nrc"));
+                    empresa.setNit(rs.getString("nit"));
+                    empresa.setGiro(rs.getString("giro"));
+
+                    return empresa;
+                }
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+
+        return null;
     }
 
 }

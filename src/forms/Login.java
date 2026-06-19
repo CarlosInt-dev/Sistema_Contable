@@ -8,9 +8,11 @@ import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import java.awt.Color;
 import java.awt.Image;
+import module_3.Class.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
 /**
@@ -50,19 +52,19 @@ public class Login extends javax.swing.JFrame {
         getContentPane().setBackground(color(23, 27, 42));
 
         //Paneles
-        panelLogin.setBackground(color(245, 251, 230));
+        panelLogin.setBackground(color(242, 246, 252));
         panelLogin.putClientProperty("FlatLaf.style", "arc:20");
         panelLogin.requestFocus();
 
         //TextFields
         txtUsuario.putClientProperty("JTextField.leadingIcon", iconUser);
         txtUsuario.putClientProperty("FlatLaf.style", "arc:25");
-        txtUsuario.setBackground(color(245, 251, 230));
+        txtUsuario.setBackground(color(242, 246, 252));
         txtUsuario.setForeground(color(23, 27, 42));
         txtUsuario.setText("Ingresa tu usuario");
         pswdPassword.putClientProperty("JTextField.leadingIcon", iconPass);
         pswdPassword.putClientProperty("FlatLaf.style", "arc:25");
-        pswdPassword.setBackground(color(245, 251, 230));
+        pswdPassword.setBackground(color(242, 246, 252));
         pswdPassword.setForeground(color(23, 27, 42));
         pswdPassword.setText("");
         pswdPassword.setEchoChar('•');
@@ -70,13 +72,13 @@ public class Login extends javax.swing.JFrame {
         //Buttons
         btnLogin.setBackground(color(47, 164, 215));
         btnLogin.setIcon(iconLogin);
-        btnLogin.setForeground(color(245, 251, 230));
+        btnLogin.setForeground(color(242, 246, 252));
         btnLogin.putClientProperty("FlatLaf.style", "arc:25");
-        btnSignin.setBackground(color(245, 251, 230));
+        btnSignin.setBackground(color(242, 246, 252));
         btnSignin.setIcon(iconSignin);
         btnSignin.setForeground(color(23, 27, 42));
         btnSignin.putClientProperty("FlatLaf.style", "arc:25");
-        btnView.setBackground(color(245, 251, 230));
+        btnView.setBackground(color(242, 246, 252));
         btnView.setIcon(iconViewPassword);
         btnView.putClientProperty("FlatLaf.style", "arc:25");
 
@@ -392,9 +394,20 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSigninActionPerformed
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
-        frmLobby frm= new frmLobby(this);
-        frm.setVisible(true);
-        this.setVisible(false);
+        UserDAO dao = new UserDAO();
+        String pass = String.valueOf(pswdPassword.getPassword());
+        User user = dao.validateLogIn(txtUsuario.getText().trim(), pass);
+        if(user!=null){
+            frmLobby frm= new frmLobby(this);
+            frm.setVisible(true);
+            this.setVisible(false);
+            txtUsuario.setText("");
+            pswdPassword.setText("");
+        }else{
+            JOptionPane.showMessageDialog(null, "Error:Su usuario o contraseña son incorrectos");
+        }
+        return;
+        
     }//GEN-LAST:event_btnLoginActionPerformed
 
     /**
