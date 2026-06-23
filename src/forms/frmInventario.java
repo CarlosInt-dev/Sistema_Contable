@@ -16,13 +16,21 @@ import javax.swing.table.TableRowSorter;
 public class frmInventario extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(frmInventario.class.getName());
+    private frmLobby padre;
 
     /**
      * Creates new form frmInventario
      */
-    public frmInventario() {
+    public frmInventario(frmLobby padre) {
         initComponents();
         cargarTabla();
+         this.padre = padre;
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                padre.setVisible(true);
+            }
+        });
     }
     
     // Instanciamos el DAO para conectarnos a la base de datos
@@ -80,7 +88,7 @@ public class frmInventario extends javax.swing.JFrame {
         btnEntrada = new javax.swing.JButton();
         btnSalida = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(204, 255, 255));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -303,7 +311,6 @@ public class frmInventario extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new frmInventario().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

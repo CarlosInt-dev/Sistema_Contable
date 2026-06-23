@@ -20,8 +20,9 @@ public class frmProveedor extends javax.swing.JFrame {
     private int idProveedorSeleccionado = -1;
     private int idEmpresa = 1; // cámbialo por Sesion.getIdEmpresa() cuando tengas la clase S
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(frmProveedor.class.getName());
+    private frmLobby padre;
 
-    public frmProveedor() {
+    public frmProveedor(frmLobby padre) {
         initComponents();
         setSize(743, 518); // ancho, alto en píxeles
         setLocationRelativeTo(null);
@@ -29,6 +30,13 @@ public class frmProveedor extends javax.swing.JFrame {
         configurarTabla();
         configurarEventos();
         cargarTabla("");
+        this.padre = padre;
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                padre.setVisible(true);
+            }
+        });
     }
     // ── Estilos oscuros (igual que FrmOrdenCompra) ─────────────────────────────
 
@@ -337,7 +345,7 @@ public class frmProveedor extends javax.swing.JFrame {
         txtBuscar = new javax.swing.JTextField();
         lblAnuncio = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         lblDatosDelProveedor.setText("Datos Del proveedor");
@@ -406,7 +414,6 @@ public class frmProveedor extends javax.swing.JFrame {
 
     public static void main(String args[]) {
 
-        java.awt.EventQueue.invokeLater(() -> new frmProveedor().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

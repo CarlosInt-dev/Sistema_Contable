@@ -16,13 +16,21 @@ public class frmRequisicion extends javax.swing.JFrame {
     private DefaultTableModel modeloTabla;
     private List<DetalleRequisicion> listaDetalle = new ArrayList<>();
     private int idEmpresaActual = 1; // Esto después vendrá de la sesión
+    private frmLobby padre;
 
-    public frmRequisicion() {
+    public frmRequisicion(frmLobby padre) {
 
         initComponents();
         inicializarTabla();
         cargarFecha();
         cargarProductos();
+        this.padre = padre;
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                padre.setVisible(true);
+            }
+        });
     }
 
     private void inicializarTabla() {
@@ -90,7 +98,7 @@ public class frmRequisicion extends javax.swing.JFrame {
         btnGuardar = new javax.swing.JButton();
         btnQuitar = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         lblFecha.setText("Fecha");
 
@@ -323,7 +331,6 @@ public class frmRequisicion extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new frmRequisicion().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

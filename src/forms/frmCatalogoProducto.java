@@ -3,32 +3,42 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package forms;
+
 import javax.swing.table.DefaultTableModel;
 import javax.swing.RowFilter;
 import javax.swing.table.TableRowSorter;
 import java.util.List;
 import module_3.Class.Producto;
 import module_3.Class.ProductoDAO;
+
 /**
  *
  * @author canum
  */
 public class frmCatalogoProducto extends javax.swing.JFrame {
-    
+
     DefaultTableModel modeloTabla = new DefaultTableModel();
     ProductoDAO proDAO = new ProductoDAO();
     TableRowSorter<DefaultTableModel> ordenador;
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(frmCatalogoProducto.class.getName());
+    private frmLobby padre;
 
     /**
      * Creates new form frmCatalogoProducto
      */
-    public frmCatalogoProducto() {
+    public frmCatalogoProducto(frmLobby padre) {
         initComponents();
         cargarTabla();
+        this.padre = padre;
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                padre.setVisible(true);
+            }
+        });
     }
-    
+
     private void cargarTabla() {
         // 1. Definimos los títulos de las columnas de nuestro catálogo
         modeloTabla.addColumn("ID Producto");
@@ -36,11 +46,11 @@ public class frmCatalogoProducto extends javax.swing.JFrame {
         modeloTabla.addColumn("Nombre");
         modeloTabla.addColumn("Descripción");
         modeloTabla.addColumn("Precio Compra");
-        
+
         // 2. Traemos la lista de la base de datos
         List<Producto> lista = proDAO.listar();
         Object[] fila = new Object[5];
-        
+
         for (int i = 0; i < lista.size(); i++) {
             fila[0] = lista.get(i).getIdProducto();
             fila[1] = lista.get(i).getCodigo();
@@ -49,10 +59,10 @@ public class frmCatalogoProducto extends javax.swing.JFrame {
             fila[4] = lista.get(i).getPrecioCompra();
             modeloTabla.addRow(fila);
         }
-        
+
         // 3. Asignamos el modelo a la tabla visual
         tblProductos.setModel(modeloTabla);
-        
+
         // 4. Activamos el ordenador para el buscador posterior
         ordenador = new TableRowSorter<>(modeloTabla);
         tblProductos.setRowSorter(ordenador);
@@ -72,7 +82,7 @@ public class frmCatalogoProducto extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblProductos = new javax.swing.JTable();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel1.setText("Buscar Producto:");
@@ -151,7 +161,6 @@ public class frmCatalogoProducto extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new frmCatalogoProducto().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

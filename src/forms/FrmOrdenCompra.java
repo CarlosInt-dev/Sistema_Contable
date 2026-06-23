@@ -23,8 +23,9 @@ public class FrmOrdenCompra extends javax.swing.JFrame {
     private DefaultTableModel modeloDetalle;
     private DefaultTableModel modeloOrdenes;
     private int idEmpresaActual = 1; // cambiar por el id de la sesión del login
+    private frmLobby padre;
 
-    public FrmOrdenCompra() {
+    public FrmOrdenCompra(frmLobby padre) {
         try {
             com.formdev.flatlaf.themes.FlatMacDarkLaf.setup();
         } catch (Exception e) {
@@ -33,7 +34,13 @@ public class FrmOrdenCompra extends javax.swing.JFrame {
         initComponents();
         initLogica();
         aplicarEstilos();
-
+        this.padre = padre;
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                padre.setVisible(true);
+            }
+        });
     }
 
     private void initLogica() {
@@ -635,7 +642,7 @@ public class FrmOrdenCompra extends javax.swing.JFrame {
         tblOrdenes = new javax.swing.JTable();
         btnReporte = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         lblNumeroOrden.setText("N* Orden");
 
@@ -891,7 +898,6 @@ public class FrmOrdenCompra extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new FrmOrdenCompra().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

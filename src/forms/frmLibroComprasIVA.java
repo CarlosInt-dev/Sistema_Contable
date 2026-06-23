@@ -16,14 +16,22 @@ public class frmLibroComprasIVA extends javax.swing.JFrame {
 
     private int idEmpresaActual = 1; // Vendrá de la sesión cuando exista FrmLogin
     private OrdenCompra ordenSeleccionada = null;
+    private frmLobby padre;
 
     /**
      * Creates new form frmLibroComprasIVA
      */
-    public frmLibroComprasIVA() {
+    public frmLibroComprasIVA(frmLobby padre) {
         initComponents();
         cargarFecha();
         cargarOrdenesElegibles();
+        this.padre = padre;
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                padre.setVisible(true);
+            }
+        });
     }
 
     private void cargarFecha() {
@@ -111,7 +119,8 @@ public class frmLibroComprasIVA extends javax.swing.JFrame {
         txtFecha = new javax.swing.JTextField();
         btnGuardar = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setAlwaysOnTop(true);
 
         lblSelectorCompra.setText("Selector de compra");
 
@@ -270,7 +279,6 @@ public class frmLibroComprasIVA extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new frmLibroComprasIVA().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
